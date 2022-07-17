@@ -39,6 +39,7 @@ class AddTodoForm extends Component {
           isAddTaskResultSuccess: true,
           shouldDisplaySnackbar: true,
         });
+        this.props.refreshFunc()
         // console.log(res);
       })
       .catch((err) => {

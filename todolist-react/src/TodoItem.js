@@ -2,9 +2,33 @@ import { Box } from "@mui/system";
 import React, { Component } from "react";
 import { Checkbox, IconButton, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import axios from "axios";
 
 class TodoItem extends Component {
+  handleCheckBoxChange = (e) => {
+    axios
+      .patch(
+        `http://localhost:5000/tasks/updateTask/${this.props.task._id}?userId=${this.props.task.userId}`,
+        { isCompleted: this.props.task.isCompleted }
+      )
+      .then((res) => {
+        console.log(res);
+        this.props.refreshFunc();
+      })
+      .catch((err) => console.log("err :", err));
+  };
 
+  handleDeleteButton = (e) => {
+    axios
+      .delete(
+        `http://localhost:5000/tasks/deleteTask/${this.props.task._id}?userId=${this.props.task.userId}`
+      )
+      .then((res) => {
+        console.log(res);
+        this.props.refreshFunc();
+      })
+      .catch((err) => console.log("err :", err));
+  };
   render() {
     return (
       <Box
@@ -28,8 +52,10 @@ class TodoItem extends Component {
             width: "5%",
           }}
         >
-          {this.props.task.isCompleted ? <Checkbox defaultChecked></Checkbox> : <Checkbox></Checkbox>}
-          
+          <Checkbox
+            defaultChecked={this.props.task.isCompleted}
+            onChange={this.handleCheckBoxChange}
+          ></Checkbox>
         </Box>
         <Box
           component="div"
@@ -39,7 +65,11 @@ class TodoItem extends Component {
             alignItems: "center",
           }}
         >
-          <Typography variant="subtitle1" component="div" textDecoration= "line-through">
+          <Typography
+            variant="subtitle1"
+            component="div"
+            textDecoration="line-through"
+          >
             {this.props.task.task}
           </Typography>
         </Box>
@@ -51,7 +81,7 @@ class TodoItem extends Component {
             alignItems: "center",
           }}
         >
-          <IconButton aria-label="delete">
+          <IconButton aria-label="delete" onClick={this.handleDeleteButton}>
             <DeleteIcon />
           </IconButton>
         </Box>

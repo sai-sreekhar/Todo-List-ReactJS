@@ -12,8 +12,12 @@ class TodoList extends Component {
       tasksList: [],
     };
   }
-  
-  async componentDidMount() {
+
+  refresh() {
+    this.getAllTasks();
+  }
+
+  async getAllTasks() {
     try {
       const res = await axios.get(
         "http://localhost:5000/tasks/?userId=62cf2a5735acac14b9b41a77"
@@ -25,6 +29,10 @@ class TodoList extends Component {
     } catch (error) {
       console.log("error", error);
     }
+  }
+
+  componentDidMount() {
+      this.getAllTasks();
   }
 
   render() {
@@ -55,7 +63,7 @@ class TodoList extends Component {
         </Box>
         <Divider></Divider>
         {tasksList.length ? (
-          tasksList.map((taskItem) => <TodoItem task={taskItem}></TodoItem>)
+          tasksList.map((taskItem) => <TodoItem task={taskItem} refreshFunc={this.props.refreshFunc}></TodoItem>)
         ) : (
           <Typography variant="h5" component="div" align="center">
             No Tasks Added
