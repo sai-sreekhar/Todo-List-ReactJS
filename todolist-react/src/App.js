@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import { Container } from "@mui/system";
 import { Component } from "react";
 import { AddTodoForm } from "./components/AddTodoForm";
-import { TodoList } from "./TodoList";
+import { TodoList } from "./components/TodoList";
 
 class App extends Component {
   refresh = () => {
